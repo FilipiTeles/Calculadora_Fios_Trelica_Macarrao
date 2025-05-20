@@ -48,9 +48,29 @@ if st.session_state.historico:
 # Explicações finais
 st.markdown("---")
 st.markdown("## ℹ️ Fórmulas Utilizadas e Constantes")
-
-st.markdown("""
+st.markdown(
+    """
 ### 👉 Para barras em **tração**:
 A quantidade de fios é calculada dividindo a força aplicada pela resistência de um único fio.
 
 **Fórmula:**
+número de fios = força (em N) ÷ 4.267
+
+---
+
+### 👉 Para barras em **compressão**:
+A quantidade de fios considera o risco de flambagem (instabilidade que ocorre quando uma barra comprida é comprimida). A fórmula leva em conta a força, o comprimento da barra e uma constante empírica.
+
+**Fórmula:**
+número de fios = raiz quadrada de [(força × comprimento²) ÷ (27906 × (0.9)^4)]
+
+---
+
+### 📌 Constantes Utilizadas:
+- Resistência à tração de 1 fio: 4.267 N
+- Raio de giração estimado do fio: 0.9 mm
+- Constante de flambagem (compressão): 27906
+- Comprimento da barra: deve ser informado em milímetros
+- Todos os cálculos usam arredondamento para cima para garantir segurança.
+"""
+)
