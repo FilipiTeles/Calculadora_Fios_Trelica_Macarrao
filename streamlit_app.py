@@ -3,7 +3,7 @@ import math
 
 st.set_page_config(page_title="Calculadora de Fios de Espaguete", layout="centered")
 st.title("🧮 Calculadora de Fios de Espaguete por Barra")
-st.title("🍝 Macarrão 'Barrila' N7")
+st.title("🍝 Macarrão ""Barilla"" N7")
 
 # Constantes
 tensao_adm_tracao = 4.267  # N por fio
