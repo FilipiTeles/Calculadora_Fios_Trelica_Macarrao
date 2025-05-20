@@ -1,46 +1,50 @@
 import streamlit as st
 import math
 
-st.title("Calculadora de Fios de Espaguete por Barra")
+st.set_page_config(page_title="Calculadora de Fios de Espaguete", layout="centered")
+st.title("🧮 Calculadora de Fios de Espaguete por Barra")
 
 # Constantes
-tensao_adm_tracao = 4.267  # kgf por fio
-raio_mm = 0.45
-denominador_compressao = 279056 * (raio_mm ** 4)
-g = 9.80665  # N/kgf
+tensao_adm_tracao = 4.267  # N por fio (tensão admissível)
+raio_giracao = 0.9  # mm
+denominador_compressao = 27906 * (raio_giracao ** 4)
 
 # Histórico
-if 'historico' not in st.session_state:
+if "historico" not in st.session_state:
     st.session_state.historico = []
 
-# Entradas
-tipo = st.radio("Tipo de esforço:", ["Tração", "Compressão"])
-forca_N = st.number_input("Força interna na barra (N):", min_value=0.01)
+# Entrada do usuário
+tipo = st.radio("Tipo de esforço", ["Tração", "Compressão"])
+forca = st.number_input("Força interna na barra (em N):", min_value=0.01)
 
+comprimento_mm = None
 if tipo == "Compressão":
-    comprimento_cm = st.number_input("Comprimento da barra (cm):", min_value=0.01)
-else:
-    comprimento_cm = None
+    comprimento_mm = st.number_input("Comprimento da barra (em mm):", min_value=0.01)
 
 if st.button("Calcular"):
     if tipo == "Tração":
-        forca_kgf = forca_N / g
-        n_fios = math.ceil(forca_kgf / tensao_adm_tracao)
+        n_fios = math.ceil(forca / tensao_adm_tracao)
     else:
-        numerador = forca_N * (comprimento_cm ** 2)
-        n_fios = math.ceil(math.sqrt(numerador / denominador_compressao))
+        base = (forca * (comprimento_mm ** 2)) / denominador_compressao
+        n_fios = math.ceil(math.sqrt(math.ceil(base)))
 
-    st.success(f"Quantidade mínima de fios: {n_fios} fio(s)")
+    st.success(f"✅ Quantidade mínima de fios: **{n_fios}** fio(s)")
 
+    # Armazenar no histórico
     st.session_state.historico.append({
         "Tipo": tipo,
-        "Força (N)": forca_N,
-        "Comprimento (cm)": comprimento_cm if comprimento_cm else "-",
+        "Força (N)": round(forca, 2),
+        "Comprimento (mm)": round(comprimento_mm, 1) if comprimento_mm else "-",
         "Fios": n_fios
     })
 
 # Mostrar histórico
 if st.session_state.historico:
-    st.subheader("Histórico")
+    st.subheader("📊 Histórico de Cálculos")
     st.table(st.session_state.historico)
+
+
+
+
+
 
