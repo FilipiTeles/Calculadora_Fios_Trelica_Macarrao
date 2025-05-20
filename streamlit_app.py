@@ -4,14 +4,53 @@ import math
 st.set_page_config(page_title="Calculadora de Fios de Espaguete", layout="centered")
 st.title("🧮 Calculadora de Fios de Espaguete por Barra")
 
+# ======================
+# INFORMAÇÕES INICIAIS
+# ======================
+
+st.markdown("### 📘 Fórmulas Utilizadas")
+
+st.markdown("""
+**1. Para barras em tração:**
+> \\[
+n_{fios} = \\left\\lceil \\frac{F}{\\sigma_{adm}} \\right\\rceil
+\\]
+- Onde:
+  - \\( F \\): força na barra (em Newtons)
+  - \\( \\sigma_{adm} = 4{,}267 \\): resistência à tração por fio (em N)
+
+**2. Para barras em compressão com flambagem:**
+> \\[
+n_{fios} = \\left\\lceil \\sqrt{\\left\\lceil \\frac{F \\cdot L^2}{27906 \\cdot r^4} \\right\\rceil} \\right\\rceil
+\\]
+- Onde:
+  - \\( F \\): força na barra (N)
+  - \\( L \\): comprimento da barra (em mm)
+  - \\( r = 0{,}9 \\ mm \\): raio de giração empírico para espaguete
+  - \\( 27906 \\): constante empírica para flambagem
+""")
+
+st.markdown("### ⚙️ Constantes Utilizadas")
+st.markdown("""
+- **Tensão admissível à tração**: 4.267 N por fio
+- **Raio de giração (compressão)**: 0.9 mm
+- **Constante de flambagem**: 27906
+""")
+
+# ======================
+# CÁLCULOS
+# ======================
+
 # Constantes
-tensao_adm_tracao = 4.267  # N por fio (tensão admissível)
+tensao_adm_tracao = 4.267  # N por fio
 raio_giracao = 0.9  # mm
 denominador_compressao = 27906 * (raio_giracao ** 4)
 
 # Histórico
 if "historico" not in st.session_state:
     st.session_state.historico = []
+
+st.markdown("## 🔢 Calculadora")
 
 # Entrada do usuário
 tipo = st.radio("Tipo de esforço", ["Tração", "Compressão"])
@@ -38,13 +77,10 @@ if st.button("Calcular"):
         "Fios": n_fios
     })
 
-# Mostrar histórico
+# ======================
+# HISTÓRICO
+# ======================
+
 if st.session_state.historico:
-    st.subheader("📊 Histórico de Cálculos")
+    st.markdown("## 📊 Histórico de Cálculos")
     st.table(st.session_state.historico)
-
-
-
-
-
-
